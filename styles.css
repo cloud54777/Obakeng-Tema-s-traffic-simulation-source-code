@@ -1,0 +1,81 @@
+/* Basic styles for Traffic Simulator */
+body {
+    font-family: Arial, sans-serif;
+    background: #f7f7f7;
+    margin: 0;
+    padding: 0;
+}
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.main-content {
+    display: flex;
+    gap: 40px;
+}
+.game-area {
+    flex: 2;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 20px;
+}
+.control-panel {
+    flex: 1;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 20px;
+}
+.control-section {
+    margin-bottom: 24px;
+}
+.control-group {
+    margin-bottom: 12px;
+}
+input[type="range"] {
+    width: 120px;
+}
+.control-btn {
+    margin-right: 10px;
+    padding: 8px 16px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: none;
+    background: #007bff;
+    color: #fff;
+    cursor: pointer;
+}
+.control-btn:hover {
+    background: #0056b3;
+}
+.stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+.stat-item {
+    background: #f0f0f0;
+    padding: 6px 12px;
+    border-radius: 4px;
+}
+.light-status-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+.status-light {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #ccc;
+    display: inline-block;
+    margin-left: 6px;
+}

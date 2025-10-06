@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Simulator - 4-Way Intersection</title>
+  <script type="module" crossorigin src="/assets/index-BY5xeunL.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-O0Csf-bD.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🚦 Traffic Simulator</h1>
+            <div class="mode-selector">
+                <label for="mode-select">Mode:</label>
+                <select id="mode-select">
+                    <option value="fixed">Fixed Timer Mode</option>
+                    <option value="adaptive">Advanced Adaptive Mode</option>
+                </select>
+                /
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="game-area">
+               <canvas id="gameCanvas" width="1200" height="1200"></canvas>
+                <div class="game-controls">
+                    <button id="playPauseBtn" class="control-btn">⏸️ Pause</button>
+                    <button id="resetBtn" class="control-btn">🔄 Reset</button>
+                </div>
+            </div>
+
+            <div class="control-panel">
+                <!-- Fixed Timer Controls -->
+                <div id="fixed-controls" class="control-section">
+                    <h3>🕓 Timer Settings</h3>
+                    <div class="control-group">
+                        <label for="greenDuration">Green Duration</label>
+                        <input type="range" id="greenDuration" min="15" max="100" value="15">
+                        <span id="greenDurationValue">15</span> seconds
+                    </div>
+                    <div class="control-group">
+                        <label for="yellowDuration">Yellow Duration</label>
+                        <input type="range" id="yellowDuration" min="2" max="10" value="3">
+                        <span id="yellowDurationValue">3</span> seconds
+                    </div>
+                    <div class="control-group">
+                        <label for="redDuration">All-Red Clearance Duration</label>
+                        <input type="range" id="redDuration" min="1" max="100" value="2">
+                        <span id="redDurationValue">2</span> seconds
+                    </div>
+                    <div class="info-text">
+                        <p>Green duration applies to both North-South and East-West directions</p>
+                    </div>
+                </div>
+
+                <!-- Adaptive Controls -->
+                <div id="adaptive-controls" class="control-section" style="display: none;">
+                    <h3>📡 Sensor Settings</h3>
+                    <div class="control-group">
+                        <label for="detectorDistance">Detector Distance: <span id="detectorValue">500</span>px</label>
+                        <input type="range" id="detectorDistance" min="100" max="500" value="500" class="slider">
+                    </div>
+                    <div class="control-group">
+                        <label for="minGreenTime">Min Green Time: <span id="minGreenValue">5</span>s</label>
+                        <input type="range" id="minGreenTime" min="3" max="15" value="5" class="slider">
+                    </div>
+                    <div class="control-group">
+                        <label for="adaptiveYellowDuration">Yellow Duration: <span id="adaptiveYellowValue">3</span>s</label>
+                        <input type="range" id="adaptiveYellowDuration" min="2" max="10" value="3" class="slider">
+                    </div>
+                </div>
+
+                <!-- Car Controls -->
+                <div class="control-section">
+                    <h3>🚙 Car Settings</h3>
+                    <div class="control-group">
+                        <label for="carSpawnRate">Spawn Rate: <span id="spawnValue">4</span> cars/10s</label>
+                        <input type="range" id="carSpawnRate" min="1" max="20" value="4" class="slider">
+                    </div>
+                    <div class="control-group">
+                        <label for="carSpeed">Car Speed: <span id="speedValue">25</span>px/s</label>
+                        <input type="range" id="carSpeed" min="15" max="50" value="25" class="slider">
+                    </div>
+                    <div class="control-group">
+                        <label for="turnRate">Turn Rate: <span id="turnValue">25</span>%</label>
+                        <input type="range" id="turnRate" min="0" max="50" value="25" class="slider">
+                    </div>
+                </div>
+
+                <!-- Statistics -->
+                <div class="control-section">
+                    <h3>📊 Statistics</h3>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <span>Cars Passed:</span>
+                            <span id="carsPassedStat">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Avg Wait Time:</span>
+                            <span id="avgWaitStat">0.0s</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Current Cars:</span>
+                            <span id="currentCarsStat">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Cars Detected N:</span>
+                            <span id="northCountStat">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Cars Detected S:</span>
+                            <span id="southCountStat">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Cars Detected E:</span>
+                            <span id="eastCountStat">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Cars Detected W:</span>
+                            <span id="westCountStat">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Traffic Light Status -->
+                <div class="control-section">
+                    <h3>🚥 Light Status</h3>
+                    <div class="light-status-grid">
+                        <div class="light-status" id="north-status">
+                            <span>N</span>
+                            <div class="status-light" id="north-light"></div>
+                        </div>
+                        <div class="light-status" id="east-status">
+                            <span>E</span>
+                            <div class="status-light" id="east-light"></div>
+                        </div>
+                        <div class="light-status" id="south-status">
+                            <span>S</span>
+                            <div class="status-light" id="south-light"></div>
+                        </div>
+                        <div class="light-status" id="west-status">
+                            <span>W</span>
+                            <div class="status-light" id="west-light"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>
